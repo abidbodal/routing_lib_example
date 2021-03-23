@@ -12,7 +12,7 @@
 #include <unordered_set>
 
 #include "includes/valhalla/baldr/rapidjson_utils.h"
-//#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 #ifdef HAVE_HTTP
 #include <prime_server/http_protocol.hpp>
@@ -20,7 +20,7 @@
 using namespace prime_server;
 #endif
 
-//#include "includes/valhalla/midgard/logging.h"
+#include "includes/valhalla/midgard/logging.h"
 
 #include "includes/valhalla/loki/worker.h"
 #include "includes/valhalla/odin/worker.h"
@@ -50,17 +50,17 @@ int main(int argc, char** argv) {
   // one shot direct request mode
   if (argc == 4) {
     // because we want the program output to go only to stdout we force any logging to be stderr
-    //valhalla::midgard::logging::Configure({{"type", "std_err"}});
+    valhalla::midgard::logging::Configure({{"type", "std_err"}});
 
     // setup an object that can answer the request
     valhalla::tyr::actor_t actor(config);
 
     // figure out which action
     valhalla::Options::Action action;
-//    if (!valhalla::Options_Action_Enum_Parse(argv[2], &action)) {
-//      std::cerr << "Unknown action" << std::endl;
-//      return 1;
-//    }
+    if (!valhalla::Options_Action_Enum_Parse(argv[2], &action)) {
+      std::cerr << "Unknown action" << std::endl;
+      return 1;
+    }
 
     // if argv[3] is a file, then use its content as request, otherwise use it directly
     std::string request_str;
@@ -87,49 +87,49 @@ int main(int argc, char** argv) {
         case valhalla::Options::route:
           std::cout << actor.route(request_str, nullptr, &request) << std::endl;
           break;
-//        case valhalla::Options::locate:
-//          std::cout << actor.locate(request_str, nullptr, &request) << std::endl;
-//          break;
-//        case valhalla::Options::sources_to_targets:
-//          std::cout << actor.matrix(request_str, nullptr, &request) << std::endl;
-//          break;
-//        case valhalla::Options::optimized_route:
-//          std::cout << actor.optimized_route(request_str, nullptr, &request) << std::endl;
-//          break;
-//        case valhalla::Options::isochrone:
-//          std::cout << actor.isochrone(request_str, nullptr, &request) << std::endl;
-//          break;
-//        case valhalla::Options::trace_route:
-//          std::cout << actor.trace_route(request_str, nullptr, &request) << std::endl;
-//          break;
-//        case valhalla::Options::trace_attributes:
-//          std::cout << actor.trace_attributes(request_str, nullptr, &request) << std::endl;
-//          break;
-//        case valhalla::Options::height:
-//          std::cout << actor.height(request_str, nullptr, &request) << std::endl;
-//          break;
-//        case valhalla::Options::transit_available:
-//          std::cout << actor.transit_available(request_str, nullptr, &request) << std::endl;
-//          break;
-//        case valhalla::Options::expansion:
-//          std::cout << actor.expansion(request_str, nullptr, &request) << std::endl;
-//          break;
+        case valhalla::Options::locate:
+          std::cout << actor.locate(request_str, nullptr, &request) << std::endl;
+          break;
+        case valhalla::Options::sources_to_targets:
+          std::cout << actor.matrix(request_str, nullptr, &request) << std::endl;
+          break;
+        case valhalla::Options::optimized_route:
+          std::cout << actor.optimized_route(request_str, nullptr, &request) << std::endl;
+          break;
+        case valhalla::Options::isochrone:
+          std::cout << actor.isochrone(request_str, nullptr, &request) << std::endl;
+          break;
+        case valhalla::Options::trace_route:
+          std::cout << actor.trace_route(request_str, nullptr, &request) << std::endl;
+          break;
+        case valhalla::Options::trace_attributes:
+          std::cout << actor.trace_attributes(request_str, nullptr, &request) << std::endl;
+          break;
+        case valhalla::Options::height:
+          std::cout << actor.height(request_str, nullptr, &request) << std::endl;
+          break;
+        case valhalla::Options::transit_available:
+          std::cout << actor.transit_available(request_str, nullptr, &request) << std::endl;
+          break;
+        case valhalla::Options::expansion:
+          std::cout << actor.expansion(request_str, nullptr, &request) << std::endl;
+          break;
         default:
           std::cerr << "Unknown action" << std::endl;
           return 1;
       }
     } // request processing error specific error condition
     catch (const valhalla::valhalla_exception_t& ve) {
-      //std::cout << valhalla::jsonify_error(ve, request) << std::endl;
+      std::cout << valhalla::jsonify_error(ve, request) << std::endl;
       return 1;
     } // it was a regular exception!?
     catch (const std::exception& e) {
-      //std::cout << jsonify_error({599, std::string(e.what())}, request) << std::endl;
+      std::cout << jsonify_error({599, std::string(e.what())}, request) << std::endl;
       return 1;
     } // anything else
     catch (...) {
-      //std::cout << jsonify_error({599, std::string("Unknown exception thrown")}, request)
-      //          << std::endl;
+      std::cout << jsonify_error({599, std::string("Unknown exception thrown")}, request)
+                << std::endl;
       return 1;
     }
 
