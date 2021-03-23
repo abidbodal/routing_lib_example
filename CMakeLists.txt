@@ -17,6 +17,15 @@ include_directories(${Boost_INCLUDE_DIR}
         ${RAPIDJSON_INCLUDE_DIR}
         ${DATE_INCLUDE_DIR}
         ${CMAKE_SOURCE_DIR}/includes/valhalla
+        /usr/local/include
         )
 add_dependencies(routing_lib_example rapidjson date)
-target_link_libraries(routing_lib_example ${CMAKE_SOURCE_DIR}/lib/libvalhalla.a)
+
+include(FindProtobuf)
+find_package(Protobuf REQUIRED)
+find_package(ZLIB)
+include_directories(${PROTOBUF_INCLUDE_DIR})
+target_link_libraries(routing_lib_example
+        ${CMAKE_SOURCE_DIR}/lib/libvalhalla.a
+        ${PROTOBUF_LIBRARY}
+        ZLIB::ZLIB)
