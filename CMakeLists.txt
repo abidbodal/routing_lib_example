@@ -17,7 +17,6 @@ include_directories(${Boost_INCLUDE_DIR}
         ${RAPIDJSON_INCLUDE_DIR}
         ${DATE_INCLUDE_DIR}
         ${CMAKE_SOURCE_DIR}/includes/valhalla
-        /usr/local/include
         )
 add_dependencies(routing_lib_example rapidjson date)
 
