@@ -32,7 +32,7 @@ public:
 bool RegisterLogger(const std::string& name, LoggerCreator function_ptr);
 
 // the Log levels we support
-enum class LogLevel : char { TRACE, DBG, INFO, WARN, ERROR };
+enum class LogLevel : char { TRACE, DEBUG, INFO, WARN, ERROR };
 
 // logger base class, not pure virtual so you can use as a null logger if you want
 class Logger {

@@ -95,6 +95,13 @@ std::string serializeTraceAttributes(
     const thor::AttributesController& controller,
     std::vector<std::tuple<float, float, std::vector<meili::MatchResult>>>& results);
 
+/**
+ * Turn proto with status information into json
+ * @param request  the proto request with status info attached
+ * @return json string
+ */
+std::string serializeStatus(const Api& request);
+
 // Return a JSON array of OpenLR 1.5 line location references for each edge of a map matching
 // result. For the time being, result is only non-empty for auto costing requests.
 void route_references(baldr::json::MapPtr& route_json,
@@ -115,6 +122,10 @@ namespace osrm {
 valhalla::baldr::json::MapPtr
 waypoint(const valhalla::Location& location, bool is_tracepoint = false, bool is_optimized = false);
 
+valhalla::baldr::json::MapPtr serialize_via_waypoint(valhalla::Location& location,
+                                                     const uint64_t geometry_idx,
+                                                     double distance_from_leg_start);
+
 /*
  * Serialize locations into osrm waypoints
  */
@@ -122,6 +133,8 @@ valhalla::baldr::json::ArrayPtr
 waypoints(const google::protobuf::RepeatedPtrField<valhalla::Location>& locations,
           bool tracepoints = false);
 valhalla::baldr::json::ArrayPtr waypoints(const valhalla::Trip& locations);
+valhalla::baldr::json::ArrayPtr via_waypoints(valhalla::Options options,
+                                              const std::vector<PointLL>& shape);
 
 void serializeIncidentProperties(rapidjson::Writer<rapidjson::StringBuffer>& writer,
                                  const valhalla::IncidentsTile::Metadata& incident_metadata,

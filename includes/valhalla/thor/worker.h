@@ -24,8 +24,8 @@
 #include <valhalla/thor/centroid.h>
 #include <valhalla/thor/isochrone.h>
 #include <valhalla/thor/multimodal.h>
-#include <valhalla/thor/timedep.h>
 #include <valhalla/thor/triplegbuilder.h>
+#include <valhalla/thor/unidirectional_astar.h>
 #include <valhalla/tyr/actor.h>
 #include <valhalla/worker.h>
 
@@ -63,6 +63,7 @@ public:
   std::string trace_attributes(Api& request);
   std::string expansion(Api& request);
   void centroid(Api& request);
+  void status(Api& request) const;
 
   void set_interrupt(const std::function<void()>* interrupt) override;
 

@@ -24,6 +24,11 @@
 namespace valhalla {
 namespace baldr {
 
+struct tile_gone_error_t : public std::runtime_error {
+  explicit tile_gone_error_t(const std::string& errormessage);
+  tile_gone_error_t(std::string prefix, baldr::GraphId edgeid);
+};
+
 struct IncidentResult {
   std::shared_ptr<const IncidentsTile> tile;
   // Index into the Location array
@@ -824,7 +829,7 @@ public:
     if (edge == nullptr) {
       throw std::runtime_error("Cannot find edgeinfo for edge: " + std::to_string(edgeid));
     }
-    return tile->edgeinfo(edge->edgeinfo_offset());
+    return tile->edgeinfo(edge);
   }
 
   /**
